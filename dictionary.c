@@ -52,3 +52,12 @@ int d_read_from_file(const char *filename) {
 
     return 1; // Return true, the file was successfully imported.
 }
+
+int d_lookup(const char *word, char *meaning) {
+    if ((ht_lookup(d->entry, word)) != NULL) {
+        strcpy(meaning, ht_lookup(d->entry, word));
+        return 1; // the word was found in the dictionary
+    } else {
+        return 0; // the word was not found
+    }
+}
