@@ -18,6 +18,42 @@ typedef struct dictionary {
 dict *d;
 char stringForKey[MAX_WORD_SIZE+1], desc[MAX_DESC_SIZE+1];
 
+/**
+ * This function takes a given string and translates it to a key that can be
+ * then used to identify a value in the hash table.
+ *
+ * @param key    a string that is to be translated to a key.
+ * @return an integer value that will idenify a value in the hash table.
+ */
+char * get_key(char *key) {
+#pragma message("Potentially redundant fucntion")
+    return key; // use the word being inserted, as the key
+}
+
+/**
+ * Hash function to produce an integer value which will determine which bucket
+ * the a key-value pair will be stored in.
+ *
+ * @param key    a key-value pair that has been translated to a key by the
+ *                get_key function.
+ * @return an integer value that represents which bucket to store the key-value
+ *         pair.
+ */
+int hash(char *key) {
+    int len = strlen(key);
+    char p = key[0];
+    unsigned int x = p << 7;
+
+    while (len >= 0) {
+        x = (1000003 * x) ^ p;
+        p++; len--;
+    }
+
+    x ^= len;
+
+    return x % TABLE_SIZE;
+}
+
 void d_initialise() {
     d = malloc(sizeof(dict));
     assert(d != NULL); // Assert that malloc did not fail.
