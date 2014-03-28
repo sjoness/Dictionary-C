@@ -33,6 +33,7 @@ install:
 	/bin/cp dictionary.h ${INSTALLROOT}/include
 	ar rcs ${INSTALLROOT}/lib/libdictionary.a $(DERIVED)
 	make all
+	/bin/rm -r d_run.dSYM/
 
 zip:
 	/bin/rm -rf p12202749
