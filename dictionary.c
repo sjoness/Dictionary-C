@@ -26,7 +26,7 @@ char stringForKey[MAX_WORD_SIZE+1], desc[MAX_DESC_SIZE+1];
  * @return an integer value that will idenify a value in the hash table.
  */
 char * get_key(char *key) {
-#pragma message("Potentially redundant fucntion")
+#pragma message("Potentially redundant function")
     return key; // use the word being inserted, as the key
 }
 
@@ -68,18 +68,26 @@ int d_read_from_file(const char *filename) {
     if (fp == NULL) {
         printf("Error: reading file \"%s\"\n", filename);
         ht_release(d->entry); // Release memory that was allocated for the dictionary.
-        return 0; // Return false if the file was not successfully imported.
+        exit(1);
     } else {
         while (fscanf(fp, "%s %[^\n]", stringForKey, desc) != EOF) { // store the word in word and the description in desc.
-            char *description;
-            description = (char *)malloc(sizeof(char) * strlen(desc));
+            char *word = malloc(sizeof(char) * strlen(stringForKey));
+            char *description = malloc(sizeof(char) * strlen(desc));
 
             if (!strncmp(stringForKey, ".", 1)) {
                 fclose(fp); // Close the file stream
                 return 1;
             } else {
+                strcpy(word, stringForKey);
                 strcpy(description, desc);
-                ht_insert(d->entry, stringForKey, description);
+
+                if (ht_lookup(d->entry, word) != NULL) {
+                    if (strcmp(word, ht_word_lookup(d->entry, word)) == 0) {
+                        ht_replace(d->entry, word, description);
+                    }
+                } else {
+                    ht_insert(d->entry, word, description);
+                }
             }
         }
     }
