@@ -16,7 +16,7 @@ typedef struct dictionary {
 } dict;
 
 dict *d;
-char temp_word[MAX_WORD_SIZE+1], temp_description[MAX_DESC_SIZE+1];
+char stringForKey[MAX_WORD_SIZE+1], desc[MAX_DESC_SIZE+1];
 
 /**
  * This function takes a given string and translates it to a key that can be
@@ -70,19 +70,19 @@ int d_read_from_file(const char *filename) {
         ht_release(d->entry); // Release memory that was allocated for the dictionary.
         exit(1);
     } else {
-        while (fscanf(fp, "%s %[^\n]", temp_word, temp_description) != EOF) {
-            char *word = malloc(sizeof(char) * strlen(temp_word));
-            char *description = malloc(sizeof(char) * strlen(temp_description));
+        while (fscanf(fp, "%s %[^\n]", stringForKey, desc) != EOF) {
+            char *word = malloc(sizeof(char) * strlen(stringForKey));
+            char *description = malloc(sizeof(char) * strlen(desc));
 
             /* Check if the first character of the word being read is a dot
             If it is, do not add it to the dictionary and end reading from the
             file */
-            if (!strncmp(temp_word, ".", 1)) {
+            if (!strncmp(stringForKey, ".", 1)) {
                 fclose(fp); // Close the file stream
                 return 1;
             } else {
-                strcpy(word, temp_word);
-                strcpy(description, temp_description);
+                strcpy(word, stringForKey);
+                strcpy(description, desc);
 
                 // Check to see if the word being read in from the file,
                 // exists in the dictionary
