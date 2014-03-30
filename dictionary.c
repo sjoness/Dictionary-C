@@ -70,10 +70,13 @@ int d_read_from_file(const char *filename) {
         ht_release(d->entry); // Release memory that was allocated for the dictionary.
         exit(1);
     } else {
-        while (fscanf(fp, "%s %[^\n]", stringForKey, desc) != EOF) { // store the word in word and the description in desc.
+        while (fscanf(fp, "%s %[^\n]", stringForKey, desc) != EOF) {
             char *word = malloc(sizeof(char) * strlen(stringForKey));
             char *description = malloc(sizeof(char) * strlen(desc));
 
+            /* Check if the first character of the word being read is a dot
+            If it is, do not add it to the dictionary and end reading from the
+            file */
             if (!strncmp(stringForKey, ".", 1)) {
                 fclose(fp); // Close the file stream
                 return 1;
@@ -81,11 +84,17 @@ int d_read_from_file(const char *filename) {
                 strcpy(word, stringForKey);
                 strcpy(description, desc);
 
+                // Check to see if the word being read in from the file,
+                // exists in the dictionary
                 if (ht_lookup(d->entry, word) != NULL) {
                     if (strcmp(word, ht_word_lookup(d->entry, word)) == 0) {
+                        // If the word is already in the dictionary, replace
+                        // it's definition with the new one being read in
                         ht_replace(d->entry, word, description);
                     }
                 } else {
+                    // Insert the new word and definition as it does not
+                    // already exist in the dictionary
                     ht_insert(d->entry, word, description);
                 }
             }
