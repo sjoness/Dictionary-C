@@ -9,31 +9,30 @@ ifndef INSTALLROOT
 endif
 
 CC=gcc
-CFLAGS=-g -c
-SOURCES=d_run.c dictionary.h dictionary.c
-DOCS=d1.txt d2.txt makefile README.md
+SOURCES=d_run.c dictionary.h dictionary.c makefile
+DOCS=d1.txt d2.txt README
 HT_DIR=ht
 DIRS=ht clist
-DERIVED=dictionary.o
 EXECUTABLE=d_run
 
 $(EXECUTABLE): $(SOURCES)
-	$(CC) -g -Wall $< -o $@ -I${INSTALLROOT}/include -L${INSTALLROOT}/lib -ldictionary -llinked_clists -lchained_hts
+	$(CC) -g -Wall $< -o $@ -I${INSTALLROOT}/include -L${INSTALLROOT}/lib \
+	 -ldictionary -lchained_hts -llinked_clists
 
 all: $(EXECUTABLE)
 
-$(DERIVED):
-	$(CC) $(CFLAGS) -I${HT_DIR} dictionary.c
+dictionary.o:
+	$(CC) -g -c -I${HT_DIR} dictionary.c
 
 install:
 	make clean
-	make $(DERIVED)
+	make dictionary.o
 	if [ ! -d "${INSTALLROOT}/include" ]; then mkdir ${INSTALLROOT}/include; fi
 	if [ ! -d "${INSTALLROOT}/lib" ]; then mkdir ${INSTALLROOT}/lib; fi
 	/bin/cp dictionary.h ${INSTALLROOT}/include
-	ar rcs ${INSTALLROOT}/lib/libdictionary.a $(DERIVED)
+	ar rcs ${INSTALLROOT}/lib/libdictionary.a dictionary.o
 	make all
-	/bin/rm -r d_run.dSYM/
+	if [ -d "d_run.dSYM" ]; then /bin/rm -r d_run.dSYM; fi
 
 zip:
 	/bin/rm -rf p12202749
@@ -48,4 +47,4 @@ zip:
 # current working directory.
 .PHONY: clean
 clean:
-	/bin/rm -f $(EXECUTABLE) $(DERIVED) *.o
+	/bin/rm -f $(EXECUTABLE) *.o
