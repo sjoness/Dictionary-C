@@ -160,14 +160,16 @@ char * ht_word_lookup(ht *t, char *k) {
     return NULL;        // report failed lookup
 }
 
-char * ht_lookup(ht *t, char *k)
+char * ht_lookup(ht *t, const char *k)
 {
     assert(t!=NULL);
     char *a;
-    int b = t->h1(k);
+    char *x;
+    strcpy(x, k);
+    int b = t->h1(x);
     clist_goto_head(t->items[b]);
     while (clist_cursor_inlist(t->items[b]))
-        if (strcmp(clist_get_item(t->items[b]), k) == 0) {
+        if (strcmp(clist_get_item(t->items[b]), x) == 0) {
             clist_goto_next(t->items[b]);
             return a = clist_get_item(t->items[b]);
         } else {
