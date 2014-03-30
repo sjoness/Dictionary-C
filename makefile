@@ -29,6 +29,8 @@ install:
 	make dictionary.o
 	if [ ! -d "${INSTALLROOT}/include" ]; then mkdir ${INSTALLROOT}/include; fi
 	if [ ! -d "${INSTALLROOT}/lib" ]; then mkdir ${INSTALLROOT}/lib; fi
+	if [ ! -f "${INSTALLROOT}/lib/liblinked_clists.a" ]; then cd clist && make install; fi
+	if [ ! -f "${INSTALLROOT}/lib/libchained_hts.a" ]; then cd ht && make install; fi
 	/bin/cp dictionary.h ${INSTALLROOT}/include
 	ar rcs ${INSTALLROOT}/lib/libdictionary.a dictionary.o
 	make all
