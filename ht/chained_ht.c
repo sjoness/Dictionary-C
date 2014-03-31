@@ -164,7 +164,8 @@ char * ht_lookup(ht *t, const char *k)
 {
     assert(t!=NULL);
     char *a;
-    char *x;
+    char *x = malloc(sizeof(char) * strlen(k));
+    assert(x != NULL);
     strcpy(x, k);
     int b = t->h1(x);
     clist_goto_head(t->items[b]);
