@@ -48,3 +48,5 @@ zip:
 .PHONY: clean
 clean:
 	/bin/rm -f d_run *.o
+	cd clist && make clean
+	cd ht && make clean
