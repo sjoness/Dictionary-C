@@ -1,9 +1,3 @@
-ifdef NDEBUG
-	ndebug=-DNDEBUG
-else
-	ndebug=
-endif
-
 ifndef INSTALLROOT
 	INSTALLROOT=${HOME}
 endif
@@ -27,12 +21,12 @@ install:
 	make dictionary.o
 	if [ ! -d "${INSTALLROOT}/include" ]; then mkdir ${INSTALLROOT}/include; fi
 	if [ ! -d "${INSTALLROOT}/lib" ]; then mkdir ${INSTALLROOT}/lib; fi
-	if [ ! -f "${INSTALLROOT}/lib/liblinked_clists.a" ]; then cd clist && make install; fi
-	if [ ! -f "${INSTALLROOT}/lib/libchained_hts.a" ]; then cd ht && make install; fi
+	cd clist && make install
+	cd ht && make install
 	/bin/cp dictionary.h ${INSTALLROOT}/include
 	ar rcs ${INSTALLROOT}/lib/libdictionary.a dictionary.o
 	make all
-	if [ -d "d_run.dSYM" ]; then /bin/rm -r d_run.dSYM; fi
+	if [ -d "d_run.dSYM" ]; then /bin/rm -r d_run.dSYM; fi # For OS X systems
 
 zip:
 	/bin/rm -rf p12202749
@@ -43,8 +37,6 @@ zip:
 	tar czf p12202749.tar.gz p12202749
 	/bin/rm -rf p12202749
 
-# Will execute the clean target even if there is a file named "clean" in the
-# current working directory.
 .PHONY: clean
 clean:
 	/bin/rm -f d_run *.o
