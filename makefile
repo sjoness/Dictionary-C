@@ -8,21 +8,19 @@ ifndef INSTALLROOT
 	INSTALLROOT=${HOME}
 endif
 
-CC=gcc
 SOURCES=d_run.c dictionary.h dictionary.c makefile
 DOCS=d1.txt d2.txt README
 HT_DIR=ht
 DIRS=ht clist
-EXECUTABLE=d_run
 
-$(EXECUTABLE): $(SOURCES)
-	$(CC) -g -Wall $< -o $@ -I${INSTALLROOT}/include -L${INSTALLROOT}/lib \
-	 -ldictionary -lchained_hts -llinked_clists
+d_run: $(SOURCES)
+	gcc -g -Wall $< -o $@ -I${INSTALLROOT}/include -L${INSTALLROOT}/lib \
+	-ldictionary -lchained_hts -llinked_clists
 
-all: $(EXECUTABLE)
+all: d_run
 
 dictionary.o:
-	$(CC) -g -c -I${HT_DIR} dictionary.c
+	gcc -g -c -I${HT_DIR} dictionary.c
 
 install:
 	make clean
@@ -49,4 +47,4 @@ zip:
 # current working directory.
 .PHONY: clean
 clean:
-	/bin/rm -f $(EXECUTABLE) *.o
+	/bin/rm -f d_run *.o
