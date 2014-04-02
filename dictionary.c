@@ -19,18 +19,6 @@ dict *d;
 char stringForKey[MAX_WORD_SIZE+1], desc[MAX_DESC_SIZE+1];
 
 /**
- * This function takes a given string and translates it to a key that can be
- * then used to identify a value in the hash table.
- *
- * @param key    a string that is to be translated to a key.
- * @return an integer value that will idenify a value in the hash table.
- */
-char * get_key(char *key) {
-#pragma message("Potentially redundant function")
-    return key; // use the word being inserted, as the key
-}
-
-/**
  * Hash function to produce an integer value which will determine which bucket
  * the a key-value pair will be stored in.
  *
@@ -57,7 +45,7 @@ int hash(char *key) {
 void d_initialise() {
     d = malloc(sizeof(dict));
     assert(d != NULL); // Assert that malloc did not fail.
-    d->entry = new_ht(TABLE_SIZE, hash, get_key);
+    d->entry = new_ht(TABLE_SIZE, hash);
 }
 
 int d_read_from_file(const char *filename) {
@@ -65,11 +53,7 @@ int d_read_from_file(const char *filename) {
 
     fp = fopen(filename, "r"); // Open the file stream for reading.
 
-    if (fp == NULL) {
-        printf("Error: reading file \"%s\"\n", filename);
-        ht_release(d->entry); // Release memory that was allocated for the dictionary.
-        exit(1);
-    } else {
+    if (fp != NULL) {
         while (fscanf(fp, "%s %[^\n]", stringForKey, desc) != EOF) {
             char *word = malloc(sizeof(char) * strlen(stringForKey));
             char *description = malloc(sizeof(char) * strlen(desc));
@@ -99,6 +83,10 @@ int d_read_from_file(const char *filename) {
                 }
             }
         }
+    } else {
+        printf("Error: reading file \"%s\"\n", filename);
+        ht_release(d->entry); // Release memory that was allocated for the dictionary.
+        exit(1);
     }
 
     fclose(fp); // Close the file stream

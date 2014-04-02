@@ -18,18 +18,16 @@ struct ht_implementation
     clist **items;    // array of linked lists
     int size;         // current number of objects stored in the table
     hashfun h1;       // user-supplied primary hash function
-    getkeyfun getkey; // user-supplied function to extract a key from an object
     int max;          // user-supplied maximum table size
 };
 
-ht * new_ht(int max, hashfun h1, getkeyfun getkey)
+ht * new_ht(int max, hashfun h1)
 {
     int i;
     ht * t = (ht*)malloc(sizeof(ht));
     t->items = (clist**)malloc(max * sizeof(clist*));
     t->size = 0;
     t->h1 = h1;
-    t->getkey = getkey;
     t->max = max;
     for (i=0; i<max; i++)
         t->items[i] = new_clist();
@@ -123,7 +121,7 @@ int ht_delete(ht *t, char *k)
     j =  t->h1(k);
     clist_goto_head(t->items[j]);
     while (clist_cursor_inlist(t->items[j])) {
-        if (t->getkey(clist_get_item(t->items[j])) == k) {
+        if (strcmp(clist_get_item(t->items[j]), k) == 0) {
             clist_delete(t->items[j]);
             (t->size)--;
             return 1;
