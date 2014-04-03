@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "any.h"
 #include "clist.h"
 #include "ht.h"
@@ -71,10 +72,15 @@ float ht_loadfactor(ht *t)
 int ht_insert(ht *t, char *k, char *v)
 {
     assert(t!=NULL);
+    char *word = malloc(sizeof(char) * 40);
+    char *description = malloc(sizeof(char) * 200);
+    strcpy(word,k); strcpy(description, v);
     int b = t->h1(k);
     clist_goto_last(t->items[b]);
-    clist_ins_after(t->items[b], v);
-    clist_ins_after(t->items[b], k);
+    clist_goto_prev(t->items[b]);
+    clist_ins_before(t->items[b], word);
+    clist_ins_before(t->items[b], description);
+    
     (t->size) += 2;
     return 1;           // insertion always succeeds
 }
@@ -98,16 +104,19 @@ int ht_insert(ht *t, char *k, char *v)
  */
 int ht_replace(ht *t, char *k, char *v) {
     assert(t!=NULL);
+    char *definition = malloc(sizeof(char) * 200);
+    strcpy(definition, v);
     int b = t->h1(k);
     clist_goto_head(t->items[b]);
     while (clist_cursor_inlist(t->items[b])) {
         if (strcmp(clist_get_item(t->items[b]), k) == 0) {
             clist_goto_next(t->items[b]);
             clist_delete(t->items[b]);
-            clist_ins_before(t->items[b], v);
+            clist_ins_before(t->items[b], definition);
             return 1;
         }
         else {
+            clist_goto_next(t->items[b]);
             clist_goto_next(t->items[b]);
         }
     }
