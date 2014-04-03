@@ -85,44 +85,6 @@ int ht_insert(ht *t, char *k, char *v)
     return 1;           // insertion always succeeds
 }
 
-/**
- * This function is used for replacing definitions when a word is entered
- * more than once. For example if the following is added:
- *                     aardvark Unfriendly, nocturnal mammal native to Africa
- *                     aardvark Burrowing, nocturnal mammal native to Africa
- *
- * The definition of aardvark should be replaced by the most recently enetered
- * definition of that word.
- *
- * @param t a hashtable
- * @param k a word to be used as the key
- * @param v a definition that will be used as a value. Forms a key-value pair
- *          with a word entry.
- *
- * @return 1 if the definition has been replaced or 0 if the definition could
- *         not be replaced.
- */
-int ht_replace(ht *t, char *k, char *v) {
-    assert(t!=NULL);
-    char *definition = malloc(sizeof(char) * 200);
-    strcpy(definition, v);
-    int b = t->h1(k);
-    clist_goto_head(t->items[b]);
-    while (clist_cursor_inlist(t->items[b])) {
-        if (strcmp(clist_get_item(t->items[b]), k) == 0) {
-            clist_goto_next(t->items[b]);
-            clist_delete(t->items[b]);
-            clist_ins_before(t->items[b], definition);
-            return 1;
-        }
-        else {
-            clist_goto_next(t->items[b]);
-            clist_goto_next(t->items[b]);
-        }
-    }
-    return 0;           // report failed replace
-}
-
 int ht_delete(ht *t, char *k)
 {
     assert(t!=NULL);
@@ -139,32 +101,6 @@ int ht_delete(ht *t, char *k)
             clist_goto_next(t->items[j]);
     }
     return 0;           // report failed delete
-}
-
-/**
- * Function to find if a given key exists within the hashtable. This function
- * was implemented in order to check if the word being entered into the
- * dictionary already existed in there or not.
- *
- * @param t a hashtable
- * @param k a word to be used as a key
- *
- * @return the word being searched for or NULL if it cannot be found in the
- *         hashtable.
- */
-char * ht_word_lookup(ht *t, char *k) {
-    assert(t!=NULL);
-    char *a;
-    int b = t->h1(k);
-    clist_goto_head(t->items[b]);
-    while (clist_cursor_inlist(t->items[b]))
-        if (strcmp(clist_get_item(t->items[b]), k) == 0) {
-            return clist_get_item(t->items[b]);
-        } else {
-            clist_goto_next(t->items[b]);
-        }
-
-    return NULL;        // report failed lookup
 }
 
 char * ht_lookup(ht *t, const char *k)

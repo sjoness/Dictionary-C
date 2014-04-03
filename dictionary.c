@@ -62,24 +62,7 @@ int d_read_from_file(const char *filename) {
                 fclose(fp); // Close the file stream
                 return 1;
             } else {
-                char *word = malloc(sizeof(char) * strlen(stringForKey));
-                strcpy(word, stringForKey);
-                char *description = malloc(sizeof(char) * strlen(desc));
-                strcpy(description, desc);
-
-                // Check to see if the word being read in from the file,
-                // exists in the dictionary
-                if (ht_lookup(d->entry, word) != NULL) {
-                    if (strcmp(word, ht_word_lookup(d->entry, word)) == 0) {
-                        // If the word is already in the dictionary, replace
-                        // it's definition with the new one being read in
-                        ht_replace(d->entry, word, description);
-                    }
-                } else {
-                    // Insert the new word and definition as it does not
-                    // already exist in the dictionary
-                    ht_insert(d->entry, word, description);
-                }
+                ht_insert(d->entry, stringForKey, desc);
             }
         }
     } else {
