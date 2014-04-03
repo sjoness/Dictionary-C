@@ -16,7 +16,6 @@ typedef struct dictionary {
 } dict;
 
 dict *d;
-char stringForKey[MAX_WORD_SIZE+1], desc[MAX_DESC_SIZE+1];
 
 /**
  * Hash function to produce an integer value which will determine which bucket
@@ -50,14 +49,12 @@ void d_initialise() {
 
 int d_read_from_file(const char *filename) {
     FILE *fp;
+    char stringForKey[MAX_WORD_SIZE+1], desc[MAX_DESC_SIZE+1];
 
     fp = fopen(filename, "r"); // Open the file stream for reading.
 
     if (fp != NULL) {
         while (fscanf(fp, "%s %[^\n]", stringForKey, desc) != EOF) {
-            char *word = malloc(sizeof(char) * strlen(stringForKey));
-            char *description = malloc(sizeof(char) * strlen(desc));
-
             /* Check if the first character of the word being read is a dot
             If it is, do not add it to the dictionary and end reading from the
             file */
@@ -65,7 +62,9 @@ int d_read_from_file(const char *filename) {
                 fclose(fp); // Close the file stream
                 return 1;
             } else {
+                char *word = malloc(sizeof(char) * strlen(stringForKey));
                 strcpy(word, stringForKey);
+                char *description = malloc(sizeof(char) * strlen(desc));
                 strcpy(description, desc);
 
                 // Check to see if the word being read in from the file,
