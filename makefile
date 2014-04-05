@@ -10,23 +10,16 @@ DIRS=ht clist
 all: d_run
 
 d_run: $(SOURCES)
-	gcc -g -Wall $< -o $@ -I${INSTALLROOT}/include -L${INSTALLROOT}/lib \
-	-ldictionary -lchained_hts -llinked_clists
-
-dictionary.o:
-	gcc -g -c -I${HT_DIR} dictionary.c
-
-install:
 	make clean
-	make dictionary.o
 	if [ ! -d "${INSTALLROOT}/include" ]; then mkdir ${INSTALLROOT}/include; fi
 	if [ ! -d "${INSTALLROOT}/lib" ]; then mkdir ${INSTALLROOT}/lib; fi
 	cd clist && make install
 	cd ht && make install
 	/bin/cp dictionary.h ${INSTALLROOT}/include
+	gcc -g -c -I${HT_DIR} dictionary.c
 	ar rcs ${INSTALLROOT}/lib/libdictionary.a dictionary.o
-	make all
-	if [ -d "d_run.dSYM" ]; then /bin/rm -r d_run.dSYM; fi # For OS X systems
+	gcc -g -Wall $< -o $@ -I${INSTALLROOT}/include -L${INSTALLROOT}/lib \
+	-ldictionary -lchained_hts -llinked_clists
 
 zip:
 	/bin/rm -rf p12202749
