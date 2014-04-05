@@ -8,14 +8,7 @@
 
 #define TABLE_SIZE 20
 
-/**
- * Dictionary data structure. Each key-value pair is known as an entry.
- */
-typedef struct dictionary {
-    ht *entry;
-} dict;
-
-dict *d;
+ht *dictionary;
 
 /**
  * Hash function to produce an integer value which will determine which bucket
@@ -42,9 +35,8 @@ int hash(char *key) {
 }
 
 void d_initialise() {
-    d = malloc(sizeof(dict));
-    assert(d != NULL); // Assert that malloc did not fail.
-    d->entry = new_ht(TABLE_SIZE, hash);
+    dictionary = new_ht(TABLE_SIZE, hash);
+    assert(dictionary != NULL);
 }
 
 int d_read_from_file(const char *filename) {
@@ -62,12 +54,12 @@ int d_read_from_file(const char *filename) {
                 fclose(fp); // Close the file stream
                 return 1;
             } else {
-                ht_insert(d->entry, stringForKey, desc);
+                ht_insert(dictionary, stringForKey, desc);
             }
         }
     } else {
         printf("Error: reading file \"%s\"\n", filename);
-        ht_release(d->entry); // Release memory that was allocated for the dictionary.
+        ht_release(dictionary); // Release memory that was allocated for the dictionary.
         exit(1);
     }
 
@@ -77,8 +69,8 @@ int d_read_from_file(const char *filename) {
 }
 
 int d_lookup(const char *word, char *meaning) {
-    if ((ht_lookup(d->entry, word)) != NULL) {
-        strcpy(meaning, ht_lookup(d->entry, word));
+    if ((ht_lookup(dictionary, word)) != NULL) {
+        strcpy(meaning, ht_lookup(dictionary, word));
         return 1; // the word was found in the dictionary
     } else {
         return 0; // the word was not found
