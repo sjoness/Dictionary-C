@@ -6,32 +6,32 @@
 #include "ht.h"
 #include "dictionary.h"
 
-#define TABLE_SIZE 20
+#define TABLE_SIZE 500000
 
+// Global instance of a hashtable. The global scope allows the dictionary to
+// be accessed by all functions in this file.
 ht *dictionary;
 
 /**
- * Hash function to produce an integer value which will determine which bucket
- * the a key-value pair will be stored in.
- *
- * @param key    a key-value pair that has been translated to a key by the
- *                get_key function.
- * @return an integer value that represents which bucket to store the key-value
- *         pair.
+ * My research for a sufficient string hash function has lead me to find
+ * this algorithm was found on:
+ *      http://www.laurentluce.com/posts/python-dictionary-implementation/
+ * 
+ * this is my implementation.
  */
-int hash(char *key) {
-    int len = strlen(key);
-    char p = key[0];
-    unsigned int x = p << 7;
+unsigned int hash(char *key) {
+    int string_length = strlen(key);
+    char char_pointer = key[0];
+    unsigned int hash_value = char_pointer << 7;
 
-    while (len >= 0) {
-        x = (1000003 * x) ^ p;
-        p++; len--;
+    while (string_length > 0) {
+        hash_value += (1000003 * hash_value) ^ char_pointer;
+        char_pointer++; string_length--;
     }
 
-    x ^= len;
+    hash_value ^= strlen(key);
 
-    return x % TABLE_SIZE;
+    return hash_value % TABLE_SIZE;
 }
 
 void d_initialise() {
@@ -40,30 +40,35 @@ void d_initialise() {
 }
 
 int d_read_from_file(const char *filename) {
-    FILE *fp;
-    char stringForKey[MAX_WORD_SIZE+1], desc[MAX_DESC_SIZE+1];
+    FILE *file_pointer;
+    char *word = malloc(sizeof(char) * MAX_WORD_SIZE);
+    char *meaning = malloc(sizeof(char) * MAX_DESC_SIZE);
 
-    fp = fopen(filename, "r"); // Open the file stream for reading.
+    assert(word != NULL);
+    assert(meaning != NULL);
 
-    if (fp != NULL) {
-        while (fscanf(fp, "%s %[^\n]", stringForKey, desc) != EOF) {
-            /* Check if the first character of the word being read is a dot
-            If it is, do not add it to the dictionary and end reading from the
-            file */
-            if (!strncmp(stringForKey, ".", 1)) {
-                fclose(fp); // Close the file stream
+    file_pointer = fopen(filename, "r"); // Open the file stream for reading.
+
+    if (file_pointer != NULL) {
+        while (fscanf(file_pointer, "%s %[^\n]", word, meaning) != EOF) {
+            /* Check if the first character of the word being read is a dot.
+             * If it is, do not add it to the dictionary and end reading from the
+             * file
+             */
+            if (!strncmp(word, ".", 1)) {
+                fclose(file_pointer); // Close the file stream
                 return 1;
             } else {
-                ht_insert(dictionary, stringForKey, desc);
+                ht_insert(dictionary, word, meaning);
             }
         }
     } else {
         printf("Error: reading file \"%s\"\n", filename);
-        ht_release(dictionary); // Release memory that was allocated for the dictionary.
+        ht_release(dictionary);
         exit(1);
     }
 
-    fclose(fp); // Close the file stream
+    fclose(file_pointer); // If control reaches here, the file did not end with a period
 
     return 1; // Return true, the file was successfully imported.
 }
@@ -71,8 +76,8 @@ int d_read_from_file(const char *filename) {
 int d_lookup(const char *word, char *meaning) {
     if ((ht_lookup(dictionary, word)) != NULL) {
         strcpy(meaning, ht_lookup(dictionary, word));
-        return 1; // the word was found in the dictionary
+        return 1;
     } else {
-        return 0; // the word was not found
+        return 0;
     }
 }
