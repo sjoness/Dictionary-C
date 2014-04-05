@@ -4,7 +4,6 @@ endif
 
 SOURCES=d_run.c dictionary.h dictionary.c makefile
 DOCS=d1.txt d2.txt README
-HT_DIR=ht
 DIRS=ht clist
 
 all: d_run
@@ -15,8 +14,8 @@ d_run: $(SOURCES)
 	if [ ! -d "${INSTALLROOT}/lib" ]; then mkdir ${INSTALLROOT}/lib; fi
 	cd clist && make install
 	cd ht && make install
-	/bin/cp dictionary.h ${INSTALLROOT}/include
-	gcc -g -c -I${HT_DIR} dictionary.c
+	if [ ! -f "${INSTALLROOT}/include" ]; then /bin/cp dictionary.h ${INSTALLROOT}/include; fi
+	gcc -g -c -Iht dictionary.c
 	ar rcs ${INSTALLROOT}/lib/libdictionary.a dictionary.o
 	gcc -g -Wall $< -o $@ -I${INSTALLROOT}/include -L${INSTALLROOT}/lib \
 	-ldictionary -lchained_hts -llinked_clists
