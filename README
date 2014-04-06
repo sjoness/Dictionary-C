@@ -9,33 +9,25 @@ can search for any of the words and retrieve it's corresponding definition.
 
 Manifest
 --------
-
-p12202749/
-
-p12202749/README        -- Text file explaining the program and it's usage.
-
-p12202749/clist/        -- Circular list data structure that is required by the
-                        hash table.
-
-p12202749/d1.txt        -- Text file containing words and definitions to be entered
-                        into the dictionary.
-
-p12202749/d2.txt        -- Text file containing words and definitions to be entered
-                        into the dictionary.
-
-p12202749/d_run.c       -- Executable program that create an instance of the
-                        dictionary data structure.
-
-p12202749/dictionary.c  -- Implementation file for the dictionary.
-
-p12202749/dictionary.h  -- Header file containing the function signatures for the
-                        dictionary.
-
-p12202749/ht/           -- Hash table data structure that is used as the underlying
-                        structure of the dictionary.
-
-p12202749/makefile      -- A UNIX makefile that contains the instructions to build
-                        the dictionary.
+.
+`-- p12202749/
+    |-- README              -- Text file explaining the program and it's usage.
+    |-- clist/              -- Circular list data structure that is required by the hash table.
+    |   |-- any.h
+    |   |-- clist.c
+    |   |-- clist.h
+    |   `-- makefile
+    |-- d1.text             -- Text file containing words and definitions to be entered into the dictionary.
+    |-- d2.txt              -- Text file containing words and definitions to be entered into the dictionary.
+    |-- d_run.c             -- Executable program that creates an instance of the dictionary data structure.
+    |-- dictionary.c        -- Implementation file for the dictionary.
+    |-- dictionary.h        -- Header file containing the function signatures for the dictionary.
+    |-- ht/                 -- Adapted hash table data structure that is used as the underlying structure of the dictionary.
+    |   |-- any.h
+    |   |-- chanined_ht.c
+    |   |-- ht.h
+    |   `-- makefile
+    `-- makefile            -- A UNIX makefile that contains the instructions to build the dictionary library and program.  
 
 Installation
 ------------
