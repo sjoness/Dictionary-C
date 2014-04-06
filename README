@@ -96,7 +96,11 @@ look-up can be O(1) performance in the best case scenario. When there are no
 collisions in the hash table, the definition can be found instantly using the
 key to locate the correct bucket for the definition.
 
-The performance can degenerate to O(N) performance if all the entries hash to a
-single bucket, but I have constructed a hash function that will ensure that
-this scenario does not occur.
+However, the performance can degenerate to O(N) performance if all the entries
+hash to a single bucket, but I have constructed a hash function that tries to
+mitigate that scenario.
+
+I have selected a table size of 500,000 in order to allow sufficient space for
+words and definitions to be entered. Computers have lots of memory these days
+so I believe this table size is not a significant waste of memory.
 
