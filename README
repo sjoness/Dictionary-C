@@ -1,0 +1,89 @@
+CTEC2901 Assignment 2
+=====================
+
+P12202749 <p12202749@myemail.dmu.ac.uk>
+
+This program reads in words and definitions from supplied text files and stores
+them in a dictionary. Once the words and definitions have been added, the user
+can search for any of the words and retrieve it's corresponding definition.
+
+Manifest
+--------
+
+p12202749/
+
+p12202749/README        -- Text file explaining the program and it's usage.
+
+p12202749/clist/        -- Circular list data structure that is required by the
+                        hash table.
+
+p12202749/d1.txt        -- Text file containing words and definitions to be entered
+                        into the dictionary.
+
+p12202749/d2.txt        -- Text file containing words and definitions to be entered
+                        into the dictionary.
+
+p12202749/d_run.c       -- Executable program that create an instance of the
+                        dictionary data structure.
+
+p12202749/dictionary.c  -- Implementation file for the dictionary.
+
+p12202749/dictionary.h  -- Header file containing the function signatures for the
+                        dictionary.
+
+p12202749/ht/           -- Hash table data structure that is used as the underlying
+                        structure of the dictionary.
+
+p12202749/makefile      -- A UNIX makefile that contains the instructions to build
+                        the dictionary.
+
+Installation
+------------
+
+In order to install the dictionary program, navigate to the dictionary
+directory and run the make command:
+
+  $ cd p12202749/
+  $ make
+
+Usage Instructions
+-------------------
+
+The program can be run without providing a text file. This will result in an
+empty dictionary:
+
+    $ ./d_run
+
+To populate the dictionary with words and definitions, run the program and
+specify the text files that you would like to read into the dictionary:
+
+    $ ./d_run d1.txt d2.txt <file3> ...
+
+> N.B. the arguments are optional. You can add as many (or as little) text
+  files as you like.
+
+Once the program is running, you can enter a word to search and if it exists
+in the dictionary, the definition will be displayed:
+
+    $ ./d_run d1.txt
+    $ aardvark <press enter>
+
+Known Bugs
+----------
+
+Currently there are no known bugs.
+
+Implementation notes
+--------------------
+
+I have chosen to use and adapt the hash table data structure in order to
+implement the dictionary. I believe the hash table is a good choice because it
+allows the entry and look-up of values, using keys to identify them. The
+look-up can be O(1) performance in the best case scenario. When there are no
+collisions in the hash table, the definition can be found instantly using the
+key to locate the correct bucket for the definition.
+
+The performance can degenerate to O(N) performance if all the entries hash to a
+single bucket, but I have constructed a hash function that will ensure that
+this scenario does not occur.
+
