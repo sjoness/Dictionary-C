@@ -40,9 +40,10 @@ p12202749/makefile      -- A UNIX makefile that contains the instructions to bui
 Installation
 ------------
 
-In order to install the dictionary program, navigate to the dictionary
-directory and run the make command:
+In order to install the dictionary program, untar the gzipped folder and use
+the make command:
 
+  $ tar xzf p12202749.tar.gz
   $ cd p12202749/
   $ make
 
