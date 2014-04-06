@@ -11,23 +11,43 @@ Manifest
 --------
 .
 `-- p12202749/
+    |
     |-- README              -- Text file explaining the program and it's usage.
-    |-- clist/              -- Circular list data structure that is required by the hash table.
-    |   |-- any.h
+    |
+    |-- clist/              -- Circular list data structure that is required by
+    |   |-- any.h              the hash table.
+    |   |
     |   |-- clist.c
+    |   |
     |   |-- clist.h
+    |   |
     |   `-- makefile
-    |-- d1.text             -- Text file containing words and definitions to be entered into the dictionary.
-    |-- d2.txt              -- Text file containing words and definitions to be entered into the dictionary.
-    |-- d_run.c             -- Executable program that creates an instance of the dictionary data structure.
+    |
+    |-- d1.text             -- Text file containing words and definitions to be
+    |                          entered into the dictionary.
+    |
+    |-- d2.txt              -- Text file containing words and definitions to be
+    |                          entered into the dictionary.
+    |
+    |-- d_run.c             -- Executable program that creates an instance of
+    |                          the dictionary data structure.
+    |
     |-- dictionary.c        -- Implementation file for the dictionary.
-    |-- dictionary.h        -- Header file containing the function signatures for the dictionary.
-    |-- ht/                 -- Adapted hash table data structure that is used as the underlying structure of the dictionary.
-    |   |-- any.h
+    |
+    |-- dictionary.h        -- Header file containing the function signatures
+    |                          for the dictionary.
+    |
+    |-- ht/                 -- Adapted hash table data structure that is used
+    |   |-- any.h              as the underlying structure of the dictionary.
+    |   |
     |   |-- chanined_ht.c
+    |   |
     |   |-- ht.h
+    |   |
     |   `-- makefile
-    `-- makefile            -- A UNIX makefile that contains the instructions to build the dictionary library and program.  
+    |
+    `-- makefile            -- A UNIX makefile that contains the instructions
+                               to build the dictionary library and program.  
 
 Installation
 ------------
