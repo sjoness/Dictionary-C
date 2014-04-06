@@ -35,16 +35,6 @@ ht * new_ht(int max, hashfun h1)
     return t;
 }
 
-void  ht_use_quadratic_probing(ht *t, int c1, int c2)
-{
-    printf("ignored: ht_use_quadratic_probing - not used in chained implementation\n");
-}
-
-void ht_use_double_hashing(ht *t, hashfun h2)
-{
-    printf("ignored: ht_use_double_hashing - not used in chained implementation\n");
-}
-
 int ht_isempty(ht *t)
 {
     assert(t!=NULL);

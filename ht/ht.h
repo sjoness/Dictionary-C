@@ -14,8 +14,6 @@ typedef struct ht_implementation ht;
 typedef unsigned int (*hashfun)(char *a);
 
 ht * new_ht(int max, hashfun h1);
-void  ht_use_quadratic_probing(ht *t, int c1, int c2);
-void  ht_use_double_hashing(ht *t, hashfun h2);
 int   ht_isempty(ht *t);
 int   ht_isfull(ht *t);
 int   ht_size(ht *t);
