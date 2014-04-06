@@ -43,18 +43,13 @@ int d_read_from_file(const char *filename) {
     FILE *file_pointer;
     char *word = malloc(sizeof(char) * MAX_WORD_SIZE);
     char *meaning = malloc(sizeof(char) * MAX_DESC_SIZE);
-
     assert(word != NULL);
     assert(meaning != NULL);
 
-    file_pointer = fopen(filename, "r"); // Open the file stream for reading.
+    file_pointer = fopen(filename, "r");
 
     if (file_pointer != NULL) {
         while (fscanf(file_pointer, "%s %[^\n]", word, meaning) != EOF) {
-            /* Check if the first character of the word being read is a dot.
-             * If it is, do not add it to the dictionary and end reading from the
-             * file
-             */
             if (!strncmp(word, ".", 1)) {
                 fclose(file_pointer); // Close the file stream
                 return 1;
