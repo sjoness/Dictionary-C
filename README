@@ -23,7 +23,7 @@ Manifest
     |   |
     |   `-- makefile
     |
-    |-- d1.text             -- Text file containing words and definitions to be
+    |-- d1.txt              -- Text file containing words and definitions to be
     |                          entered into the dictionary.
     |
     |-- d2.txt              -- Text file containing words and definitions to be
